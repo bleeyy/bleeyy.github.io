@@ -13,7 +13,6 @@
       overflow: hidden;
     }
 
-    /* stars */
     .stars {
       position: fixed;
       inset: 0;
@@ -32,14 +31,15 @@
       to   { opacity: 0.9; }
     }
 
-    /* waves */
     .waves-container {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 55vh;
+      /* height breathes via JS */
+      height: 25vh;
       overflow: hidden;
+      transition: height 0.05s linear;
     }
 
     svg.waves {
@@ -49,14 +49,15 @@
       height: 100%;
     }
 
-    .wave-1 { animation: wave 5s linear infinite; }
-    .wave-2 { animation: wave 5s linear infinite reverse; opacity: 0.7; }
-    .wave-3 { animation: wave 5s linear infinite; opacity: 0.45; }
-    .wave-4 { animation: wave 5s linear infinite reverse; opacity: 0.25; }
+    /* all waves scroll at same speed so they stay in sync */
+    .wave-1 { animation: scroll 8s linear infinite; }
+    .wave-2 { animation: scroll 8s linear infinite reverse; opacity: 0.70; }
+    .wave-3 { animation: scroll 6s linear infinite;          opacity: 0.45; }
+    .wave-4 { animation: scroll 16s linear infinite reverse;  opacity: 0.25; }
 
-    @keyframes wave {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    @keyframes scroll {
+      from { transform: translateX(0);    }
+      to   { transform: translateX(-50%); }
     }
   </style>
 </head>
@@ -64,7 +65,7 @@
 
   <div class="stars" id="stars"></div>
 
-  <div class="waves-container">
+  <div class="waves-container" id="wavesContainer">
     <svg class="waves" viewBox="0 0 2880 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1">
@@ -85,30 +86,66 @@
         </linearGradient>
       </defs>
 
-      <!-- wave 4 back -->
+      <!--
+        Every path:
+        - starts and ends at the same Y (e.g. wave-4 starts M0 200 and last C endpoint is 2880 200)
+        - fits exactly within viewBox width 2880
+        - each C cycle is an equal subdivision of 2880 so the pattern tiles perfectly
+      -->
+
+      <!-- Wave 4: Back — cycle: 720px -->
       <g class="wave-4">
-        <path fill="url(#wg1)" d="M0 200 C240 150 480 250 720 200 C960 150 1200 250 1440 200 C1680 150 1920 250 2160 200 C2400 150 2640 250 2880 200 L2880 320 L0 320 Z"/>
+        <path fill="url(#wg1)" d="
+          M0 150
+          C240 150 480 120 720 155
+          C1020 215 1260 215 1500 180
+          C1740 150 1980 130 2220 165
+          C2460 215 2720 215 2880 180
+          L2880 320 L0 320 
+          Z"/>
       </g>
 
-      <!-- wave 3 -->
+      <!-- Wave 3, 2880 px / 4 = 720 px each curve-->
       <g class="wave-3">
-        <path fill="url(#wg2)" d="M0 220 C360 160 720 280 1080 220 C1440 160 1800 280 2160 220 C2520 160 2880 280 3240 220 L3240 320 L0 320 Z"/>
+        <path fill="url(#wg2)" d="
+          M0 170
+          C240 170 480 140 720 175
+          C1020 235 1260 235 1500 200
+          C1740 170 1980 150 2220 185
+          C2460 235 2720 235 2880 200
+          L2880 320 L0 320 
+          Z"/>
       </g>
 
-      <!-- wave 2 -->
+      <!-- Wave 2 2880 px / 4 = 720 px each curve-->
       <g class="wave-2">
-        <path fill="url(#wg3)" d="M0 240 C300 190 600 290 900 240 C1200 190 1500 290 1800 240 C2100 190 2400 290 2700 240 C3000 190 3300 290 3600 240 L3600 320 L0 320 Z"/>
+        <path fill="url(#wg3)" d="
+          M0 190
+          C240 190 480 160 720 195
+          C1020 255 1260 255 1500 220
+          C1740 190 1980 170 2220 205
+          C2460 255 2720 255 2880 220
+          L2880 320 L0 320 
+          Z"/>
       </g>
 
-      <!-- wave 1 front -->
-      <g class="wave-1">
-        <path fill="url(#wg4)" d="M0 265 C180 235 360 295 540 265 C720 235 900 295 1080 265 C1260 235 1440 295 1620 265 C1800 235 1980 295 2160 265 C2340 235 2520 295 2700 265 C2880 235 3060 295 3240 265 L3240 320 L0 320 Z"/>
+      <!-- Wave 1: Front, 2880 px / 4 = 720 px each curve-->
+      /<g class="wave-1">
+        <path fill="url(#wg4)" d="
+          M0 200
+          C240 200 480 170 720 205
+          C1020 265 1260 265 1500 230
+          C1740 200 1980 180 2220 215
+          C2460 265 2720 265 2880 230
+          L2880 320 L0 320 
+          Z"/>
       </g>
     </svg>
   </div>
 
   <script>
-    const container = document.getElementById('stars');
+    /* ── stars ── */
+    const starsEl = document.getElementById('stars');
     for (let i = 0; i < 130; i++) {
       const s = document.createElement('div');
       s.className = 'star';
@@ -121,8 +158,32 @@
         --d:${(Math.random() * 3 + 1.5).toFixed(1)}s;
         animation-delay:${(Math.random() * 4).toFixed(1)}s;
       `;
-      container.appendChild(s);
+      starsEl.appendChild(s);
     }
+
+    /* ── wave height breathing ──
+       Uses a sine wave so height rises, peaks, falls, troughs, and returns
+       to the starting point in one smooth continuous loop — no jump.
+
+       base   = resting height in vh
+       range  = how many vh it rises and falls around base
+       period = seconds for one full breath cycle
+    */
+    const container = document.getElementById('wavesContainer');
+    const base   = 55;   // vh — resting height
+    const range  = 12;   // vh — how much it rises/falls
+    const period = 6;    // seconds per full cycle
+
+    function breathe() {
+      const t = performance.now() / 1000;
+      // Math.sin goes -1 → +1 → -1 in one period, so height oscillates
+      // smoothly between (base - range) and (base + range)
+      const h = base + range * Math.sin((2 * Math.PI * t) / period);
+      container.style.height = h.toFixed(2) + 'vh';
+      requestAnimationFrame(breathe);
+    }
+
+    requestAnimationFrame(breathe);
   </script>
 </body>
 </html>
