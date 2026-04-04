@@ -9,8 +9,7 @@
 
     body {
       background: #0a0f1e;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
     }
 
     .stars {
@@ -41,7 +40,7 @@
       overflow: hidden;
       transition: height 0.05s linear;
     }
-
+    
     svg.waves {
       position: absolute;
       bottom: 0;
@@ -88,7 +87,7 @@
 
       <!--
         Every path:
-        - starts and ends at the same Y (e.g. wave-4 starts M0 200 and last C endpoint is 2880 200)
+        - starts and ends at the same Y (e.g. wave-4 starts M0 150 and last C endpoint is 2880 180)
         - fits exactly within viewBox width 2880
         - each C cycle is an equal subdivision of 2880 so the pattern tiles perfectly
       -->
@@ -162,9 +161,7 @@
     }
 
     /* ── wave height breathing ──
-       Uses a sine wave so height rises, peaks, falls, troughs, and returns
-       to the starting point in one smooth continuous loop — no jump.
-
+       Uses a sine wave
        base   = resting height in vh
        range  = how many vh it rises and falls around base
        period = seconds for one full breath cycle
@@ -185,5 +182,6 @@
 
     requestAnimationFrame(breathe);
   </script>
+  <div style="height: 200vh;"></div>
 </body>
 </html>
