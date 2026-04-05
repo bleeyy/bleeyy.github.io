@@ -11,10 +11,11 @@
     body {
       background: #0a0f1e;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .stars {
-      position: fixed;
+      position: absolute;
       inset: 0;
       pointer-events: none;
     }
@@ -37,7 +38,7 @@
     }
     
     .waves-container {
-      position: fixed;
+      position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
@@ -86,7 +87,7 @@
 
   <div class="stars" id="stars"></div>
   <div id="name-tag" style="
-    position: fixed;
+    position: absolute;
     top: 1.5rem;
     right: 2rem;
     font-family: 'Raleway', sans-serif;
@@ -100,7 +101,7 @@
     pointer-events: none;
   ">BENJAMIN LE</div>
   <div id="hero-text" style="
-      position: fixed;
+      position: absolute;
       top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -115,7 +116,7 @@
       color: rgba(255,255,255,0.75);
       letter-spacing: 0.15em;
       opacity: 1;
-      transition: opacity 1s ease;
+      transition: opacity 0.75s ease;
     "></div>
     <div id="line2" style="
       font-family: 'Raleway', sans-serif;
@@ -141,7 +142,7 @@
       font-size: 1.5rem;
       color: rgba(255,255,255,0.35);
       opacity: 0;
-      transition: opacity 2s ease;
+      transition: opacity 3s ease;
       margin-top: 0.75rem;
       animation: bounce 1.5s ease-in-out infinite;
     ">↓</div>
@@ -177,8 +178,8 @@
       <!-- Wave 4: Back — cycle: 720px -->
       <g class="wave-4">
         <path fill="url(#wg1)" d="
-          M0 150
-          C240 150 480 120 720 155
+          M0 100
+          C240 100 480 120 720 155
           C1020 215 1260 215 1500 180
           C1740 150 1980 130 2220 165
           C2460 215 2720 215 2880 180
@@ -224,7 +225,22 @@
     </svg>
   </div>
 
+  <div id="depth-meter" style="
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    z-index: 100;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+  ">DEPTH (m): <span id="depth-value">0</span></div>
   <script>
+      const depthMeter = document.getElementById('depth-meter');
+      const depthValue = document.getElementById('depth-value');
     setTimeout(() => {
       document.getElementById('name-tag').style.opacity = '1';
     }, 150);
@@ -267,6 +283,16 @@
 
     requestAnimationFrame(breathe);
 
+    function updateDepth() {
+      const scrolled = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const depth = Math.round((scrolled / maxScroll) * 3800);
+      depthValue.textContent = depth;
+      requestAnimationFrame(updateDepth);
+    }
+
+    requestAnimationFrame(updateDepth);
+
     // typing animation
 const line1 = document.getElementById('line1');
 const line2 = document.getElementById('line2');
@@ -285,25 +311,32 @@ function typeText(el, text, speed, callback) {
   }, speed);
 }
 
-typeText(line1, 'HELLO!', 100, () => {
+typeText(line1, 'HELLO!', 85, () => {
   setTimeout(() => {
     line1.style.opacity = '0';
     setTimeout(() => {
       line2.style.opacity = '1';
-      typeText(line2, 'WELCOME TO MY PERSONAL WEBSITE!', 60, () => {
+      typeText(line2, 'CURIOUS ABOUT WHAT I DO?', 50, () => {
         setTimeout(() => {
           line2.style.opacity = '0';
           setTimeout(() => {
             line3.style.opacity = '1';
             arrow.style.opacity = '1';
-            typeText(line3, 'SCROLL DOWN TO DIVE IN', 60);
+            typeText(line3, 'SCROLL DOWN TO DIVE IN!', 50);
           }, 1000);
         }, 1200);
       });
     }, 1000);
   }, 1200);
 });
+
   </script>
-  <div style="height: 400vh;"></div>
+  <div style="
+  position: relative;
+  z-index: -1;
+  margin-top: 90vh;
+  min-height: 400vh;
+  background: linear-gradient(to bottom, #1054a0, #020c1a);
+"></div>
 </body>
 </html>
