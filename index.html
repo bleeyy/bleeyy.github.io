@@ -180,6 +180,18 @@
       50% { opacity: 1; }
     }
 
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+
+    #status-text.active {
+      color: #ff4444;
+      animation: shake 0.3s ease-in-out infinite;
+      display: inline-block;
+    }
+
     main.stage {
       pointer-events: none;
       flex: 1;
@@ -467,6 +479,89 @@
       to { transform: scale(1); opacity: 1; }
     }
 
+    /* Enhanced panel animations */
+    @keyframes panelOpenSpring {
+      0% { transform: translateX(-50%) scale(0.88); opacity: 0; }
+      60% { transform: translateX(-50%) scale(1.02); opacity: 1; }
+      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+
+    #overlay.open .panel {
+      animation: panelOpenSpring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Staggered load animations */
+    @keyframes slideInFromLeft {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .brand {
+      animation: slideInFromLeft 0.5s ease-out forwards;
+    }
+
+    .brand .tagline {
+      animation: slideInFromLeft 0.6s ease-out forwards;
+    }
+
+    nav.dock .dock-btn:nth-child(1) { animation: slideInFromLeft 0.7s ease-out forwards; }
+    nav.dock .dock-btn:nth-child(2) { animation: slideInFromLeft 0.8s ease-out forwards; }
+    nav.dock .dock-btn:nth-child(3) { animation: slideInFromLeft 0.9s ease-out forwards; }
+
+    .status {
+      animation: slideInFromLeft 0.7s ease-out forwards;
+      opacity: 0;
+    }
+
+    .social-row {
+      animation: slideInFromLeft 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    /* Project link hover effects */
+    .proj a.proj-link {
+      position: relative;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .proj a.proj-link:hover {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Dock button enhanced states */
+    .dock-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dock-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      transition: left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .dock-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Social icon animation */
+    .social-icon {
+      transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Bracket cursor enhanced scale */
+    #bracket-cursor.hover {
+      transform: scale(1.5) translate(-50%, -50%);
+    }
+
     @media (max-width: 640px) {
       .app { flex-direction: column; }
       .sidebar { width: 100%; height: auto; padding: 16px clamp(16px, 4vw, 28px) 14px; }
@@ -557,7 +652,7 @@
             <path d="M3.5 6 12 13l8.5-7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a class="social-icon" href="https://www.linkedin.com/in/benjamin-le-11435925a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <a class="social-icon" href="https://www.linkedin.com/in/benjamin-le-/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
             <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5ZM2.98 9.99h4v12.51h-4V9.99Zm6.74 0h3.83v1.71h.05c.53-1 1.84-2.06 3.79-2.06 4.06 0 4.81 2.67 4.81 6.14v6.72h-4v-5.96c0-1.42-.03-3.25-1.98-3.25-1.98 0-2.29 1.55-2.29 3.15v6.06h-4V9.99Z"/>
           </svg>
@@ -566,7 +661,7 @@
     </aside>
 
     <div class="status">
-      <div><span class="dot"></span>field: stable</div>
+      <div><span class="dot"></span>field: <span id="status-text">stable</span></div>
     </div>
 
     <main class="stage"></main>
@@ -653,6 +748,19 @@
         const MAX_RIPPLE_RADIUS = 180;
         for (const rp of ripples) { rp.r += 1.5; rp.life *= 0.96; }
         ripples = ripples.filter(rp => rp.life > 0.02);
+        
+        // Update status based on ripple activity
+        const statusText = document.getElementById('status-text');
+        if (statusText) {
+          if (ripples.length > 0) {
+            statusText.textContent = 'active';
+            statusText.classList.add('active');
+          } else {
+            statusText.textContent = 'stable';
+            statusText.classList.remove('active');
+          }
+        }
+        
         const speed = Math.min(Math.hypot(mouse.vx, mouse.vy), 40);
         mouse.vx *= 0.9; mouse.vy *= 0.9;
         for (let r = 0; r < rows; r++) {
@@ -707,35 +815,46 @@
         }
         requestAnimationFrame(tick);
       }
+
+      // Expose ripple trigger for panel interactions
+      window.triggerAsciiRipple = function(x, y, radius = 0, life = 0.9) {
+        if (ripples.length > 5) ripples = ripples.slice(-5);
+        ripples.push({ x, y, r: radius, life });
+      };
+
       resize();
       requestAnimationFrame(tick);
     })();
 
     (function () {
+      // Easter egg hint for developers
+      console.log('%c↑ ↑ ↓ ↓ ← → ← → B A', 'color: #ffffff; font-family: monospace; font-size: 14px; text-shadow: 0 0 8px rgba(255,255,255,0.4);');
+
       const content = {
         about: {
           isTerminal: true,
           html: `
-            <div id="about-terminal" style="background:#0c0c0c;font-family:'IBM Plex Mono','Courier New',monospace;animation:termOpen 0.28s cubic-bezier(0.16,1,0.3,1) both;">
-              <div id="at-titlebar" style="display:flex;align-items:center;height:32px;background:#161616;padding:0 0 0 12px;border-bottom:1px solid #222;cursor:move;user-select:none;">
-                <div style="font-size:12px;letter-spacing:0.02em;flex:1;">
+            <div id="about-terminal" style="background:#0c0c0c;font-family:'IBM Plex Mono','Courier New',monospace;animation:termOpen 0.28s cubic-bezier(0.16,1,0.3,1) both;display:flex;flex-direction:column;height:100%;border:1px solid #333;box-shadow:inset 0 0 20px rgba(0,0,0,0.8);">
+              <div id="at-titlebar" style="display:flex;align-items:center;height:32px;background:linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);padding:0 0 0 12px;border-bottom:1px solid #2a2a2a;cursor:move;user-select:none;flex-shrink:0;">
+                <div style="font-size:12px;letter-spacing:0.02em;flex:1;font-weight:500;">
                   <span style="color:#f2f2f2">benjamin.le</span>
-                  <span style="color:#444"> &gt; </span>
+                  <span style="color:#555"> ~ </span>
                   <span style="color:#888">about</span>
+                  <span style="color:#555"> ❯ </span>
                 </div>
                 <button id="at-close" style="width:46px;height:32px;border:none;background:none;color:#666;display:flex;align-items:center;justify-content:center;cursor:none;transition:background 0.1s,color 0.1s;">
                   <svg width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.2"><line x1="0" y1="0" x2="10" y2="10"/><line x1="10" y1="0" x2="0" y2="10"/></svg>
                 </button>
               </div>
-              <div id="at-body" style="padding:10px 16px 4px;min-height:550px;max-height:950px;overflow-y:auto;font-size:13px;line-height:1.7;"></div>
-              <div style="display:flex;align-items:center;padding:2px 16px 12px;">
-                <span style="font-size:13px;margin-right:8px;user-select:none;flex-shrink:0;">
+              <div id="at-body" style="padding:12px 14px;flex:1;overflow-y:auto;font-size:13px;line-height:1.6;color:#aaa;border-bottom:1px solid #222;"></div>
+              <div style="display:flex;align-items:center;padding:8px 14px;background:#0a0a0a;border-top:1px solid #222;flex-shrink:0;">
+                <span style="font-size:13px;margin-right:6px;user-select:none;flex-shrink:0;white-space:nowrap;">
                   <span style="color:#f2f2f2">benjamin.le</span>
-                  <span style="color:#444"> &gt; </span>
+                  <span style="color:#555"> ~ </span>
                   <span style="color:#888">about</span>
-                  <span style="color:#444"> &gt;</span>
+                  <span style="color:#555"> ❯</span>
                 </span>
-                <input id="at-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command..." style="flex:1;background:none;border:none;outline:none;font-family:inherit;font-size:13px;color:#f2f2f2;caret-color:#fff;cursor:none;"/>
+                <input id="at-input" type="text" autocomplete="off" spellcheck="false" placeholder="" style="flex:1;background:none;border:none;outline:none;font-family:inherit;font-size:13px;color:#f2f2f2;caret-color:#0f0;cursor:none;margin-left:4px;padding:0;"/>
               </div>
             </div>
           `
@@ -771,7 +890,19 @@
                 <span class="proj-tags">Python · C++ · Arduino · Bambu Labs</span>
               </div>
               <div class="proj-desc">Glove that translates American Sign Language and nonverbal signs in real-time using flex sensors and an Arduino, with live output through a Python Tkinter window. Won Best Beginner Hack, Hardware Track at TAMUHack 2026.</div>
-              <a class="proj-link" href="#" onclick="return false;">view demo →</a>
+              <a class="proj-link" href="https://github.com/bleeyy/DigiSpeak" target="_blank" rel="noopener noreferrer">view repo →</a>
+              <span style="color: var(--fg-dim); margin: 0 8px;">·</span>
+              <a class="proj-link" href="#" onclick="return false;" style="margin-left: 0; margin-top: 8px;">view demo →</a>
+            </div>
+            <div class="proj">
+              <div class="proj-head">
+                <span class="proj-name">MatchCart &mdash; grocery price comparison</span>
+                <span class="proj-tags">Next.js · React · TypeScript · Supabase</span>
+              </div>
+              <div class="proj-desc">Full-stack grocery price comparison application enabling users to build shopping carts and compare item prices across Kroger, Target, Aldi, and H-E-B. Features a multi-store price engine that matches products, calculates cart totals, and ranks retailers by cost and availability.</div>
+              <a class="proj-link" href="https://github.com/bleeyy/Matchcart" target="_blank" rel="noopener noreferrer">view repo →</a>
+              <span style="color: var(--fg-dim); margin: 0 8px;">·</span>
+              <a class="proj-link" href="https://matchcart.vercel.app" target="_blank" rel="noopener noreferrer" style="margin-left: 0; margin-top: 8px;">try demo →</a>
             </div>
             <div class="proj">
               <div class="proj-head">
@@ -779,15 +910,7 @@
                 <span class="proj-tags">React · TypeScript</span>
               </div>
               <div class="proj-desc">Dual-interface platform for tracking astronaut wellness on long-duration spaceflights. Integrated daily health logs, mission control dashboard for real-time monitoring, task assignment, and cognitive assessments from NASA's Cognition Test Battery.</div>
-              <a class="proj-link" href="https://github.com/bleeyy/NASAOrbit" target="_blank" rel="noopener noreferrer">view repo →</a>
-            </div>
-            <div class="proj">
-              <div class="proj-head">
-                <span class="proj-name">Generative ASCII engine</span>
-                <span class="proj-tags">Canvas · JavaScript</span>
-              </div>
-              <div class="proj-desc">The interactive background of this very site &mdash; a cursor-reactive particle-grid renderer.</div>
-              <a class="proj-link" href="https://github.com/bleeyy/bleeyy.github.io" target="_blank" rel="noopener noreferrer">view repo →</a>
+              <a class="proj-link" href="https://github.com/bleeyy/Hypnos" target="_blank" rel="noopener noreferrer">view repo →</a>
             </div>
           `
         }
@@ -932,8 +1055,24 @@
           tb.appendChild(d);
         }
 
-        addLine('bright', 'Welcome!');
-        addLine('ok', "type 'help' to see available commands.");
+        // Initial help text showing available commands
+        addLine('dim', '┌─ terminal v1.0 ─────────────────────────────────');
+        addLine('dim', '│');
+        addLine('line', 'available commands:');
+        addLine('line', '');
+        addLine('bright', '  help');
+        addLine('dim', '    show available commands');
+        addLine('line', '');
+        addLine('bright', '  whoami');
+        addLine('dim', '    information about benjamin');
+        addLine('line', '');
+        addLine('bright', '  edu');
+        addLine('dim', '    educational background');
+        addLine('line', '');
+        addLine('bright', '  clear');
+        addLine('dim', '    clear terminal');
+        addLine('dim', '│');
+        addLine('dim', '└─────────────────────────────────────────────────');
         addLine('', '');
 
         ti.addEventListener('keydown', e => {
@@ -1000,6 +1139,94 @@
         el.addEventListener('mouseenter', () => bracket.classList.add('hover'));
         el.addEventListener('mouseleave', () => bracket.classList.remove('hover'));
       });
+
+      /* ---- PROJECT LINK INTERACTIONS ---- */
+      document.addEventListener('click', (e) => {
+        const projLink = e.target.closest('.proj-link');
+        if (projLink && projLink.href && !projLink.href.includes('javascript:')) {
+          // Create ripple at click position
+          if (window.triggerAsciiRipple) {
+            window.triggerAsciiRipple(e.clientX, e.clientY, 0, 0.7);
+          }
+        }
+      });
+
+      /* ---- EMAIL COPY TO CLIPBOARD ---- */
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a[href^="mailto:"]')) {
+          const email = 'benjaminle17@outlook.com';
+          navigator.clipboard.writeText(email).then(() => {
+            // Create visual feedback
+            const emailEl = e.target.closest('a');
+            const originalContent = emailEl.innerHTML;
+            emailEl.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="20 6 9 17 4 12"/></svg>';
+            emailEl.style.color = 'var(--accent)';
+            setTimeout(() => {
+              emailEl.innerHTML = originalContent;
+              emailEl.style.color = '';
+            }, 1500);
+          });
+        }
+      });
+
+      /* ---- KONAMI CODE EASTER EGG ---- */
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+      let konamiIndex = 0;
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex] || e.code === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            konamiIndex = 0;
+            activateKonamiEasterEgg();
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
+
+      function activateKonamiEasterEgg() {
+        // Trigger dramatic ASCII field effect
+        if (window.triggerAsciiRipple) {
+          const w = window.innerWidth, h = window.innerHeight;
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              const x = Math.random() * w;
+              const y = Math.random() * h;
+              window.triggerAsciiRipple(x, y, 0, 0.85);
+            }, i * 80);
+          }
+        }
+        
+        // Show hidden message
+        const msg = document.createElement('div');
+        msg.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(5, 5, 5, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #f2f2f2;
+          padding: 24px 32px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 14px;
+          text-align: center;
+          z-index: 9999;
+          border-radius: 4px;
+          pointer-events: auto;
+          cursor: default;
+          line-height: 1.6;
+          animation: slideInFromLeft 0.4s ease-out;
+        `;
+        msg.innerHTML = '[ you found the secret ✓ ]<br><span style="font-size: 12px; color: #888;">nice moves, player one</span>';
+        document.body.appendChild(msg);
+        
+        setTimeout(() => {
+          msg.style.animation = 'slideInFromLeft 0.4s ease-out reverse';
+          setTimeout(() => msg.remove(), 400);
+        }, 2000);
+      }
 
     })();
   </script>
