@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Benjamin Le's Portfolio</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap');
+
     :root {
       --bg: #050505;
       --fg-dim: #3a3a3a;
@@ -162,6 +164,11 @@
       text-align: right;
       letter-spacing: 0.06em;
       line-height: 1.6;
+      background: rgba(5, 5, 5, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 10px;
+      border-radius: 3px;
+      backdrop-filter: blur(4px);
     }
 
     .status .dot {
@@ -218,6 +225,7 @@
       color: var(--fg-mid);
       font-family: var(--font-body);
       font-size: clamp(15px, 1.8vw, 19px);
+      font-weight: 400;
       letter-spacing: 0.05em;
       padding: 18px 22px;
       border-radius: 4px;
@@ -226,7 +234,7 @@
       gap: 12px;
       width: 100%;
       text-align: left;
-      transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+      transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
     }
 
     .dock-btn .num {
@@ -249,11 +257,14 @@
     .dock-btn.active {
       border-color: var(--accent);
       color: var(--accent);
-      background: rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
     }
 
     .dock-btn.active .num {
-      color: var(--accent-dim);
+      color: var(--accent);
+      font-weight: 700;
     }
 
     /* overlay panel */
@@ -375,6 +386,7 @@
     .panel-body h3 {
       color: var(--fg-bright);
       font-size: 13px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin: 0 0 10px;
@@ -428,7 +440,7 @@
       flex-wrap: wrap;
     }
 
-    .proj .proj-name { color: var(--fg-bright); font-size: 14px; }
+    .proj .proj-name { color: var(--fg-bright); font-size: 14px; font-weight: 700; }
     .proj .proj-tags { color: var(--accent); font-size: 11px; letter-spacing: 0.04em; }
     .proj .proj-desc { margin-top: 6px; color: var(--fg-mid); font-size: 13px; }
 
@@ -436,12 +448,28 @@
       color: var(--fg-mid);
       font-size: 11.5px;
       text-decoration: none;
-      border-bottom: 1px solid var(--fg-dim);
+      border-bottom: 2px solid var(--fg-dim);
       display: inline-block;
       margin-top: 8px;
+      position: relative;
+      transition: color 0.2s ease, border-color 0.2s ease, text-shadow 0.2s ease;
     }
 
-    .proj a.proj-link:hover { color: var(--accent); border-color: var(--accent); }
+    .proj a.proj-link::after {
+      content: ' →';
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .proj a.proj-link:hover { 
+      color: var(--accent); 
+      border-color: var(--accent);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    .proj a.proj-link:hover::after {
+      opacity: 1;
+    }
 
     .social-row {
       pointer-events: auto;
@@ -739,6 +767,8 @@
       window.addEventListener('touchend', onLeave);
 
       let frame = 0;
+      let overlayElement = null;
+      
       function tick() {
         frame++;
         ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -746,6 +776,10 @@
         ctx.textBaseline = 'top';
         const mx = mouse.x, my = mouse.y;
         const MAX_RIPPLE_RADIUS = 180;
+        
+        if (!overlayElement) overlayElement = document.getElementById('overlay');
+        const isPanelOpen = overlayElement ? overlayElement.classList.contains('open') : false;
+        
         for (const rp of ripples) { rp.r += 1.5; rp.life *= 0.96; }
         ripples = ripples.filter(rp => rp.life > 0.02);
         
@@ -802,6 +836,8 @@
             const breathe = 0.5 + 0.5 * Math.sin(frame * 0.02 + cell.phase);
             const flicker = (Math.random() - 0.5) * 0.07;
             let alpha = cell.baseAlpha * (0.6 + 0.4 * breathe) + ag * 0.9 + flicker + cell.pop * 0.8;
+            // Dimming when panel is open - temporarily disabled for debugging
+            // if (isPanelOpen) { alpha *= 0.4; agDisplay *= 0.3; }
             alpha = Math.max(0.05, Math.min(1, alpha));
             let color;
             if (ag > 0.6) color = `rgba(255,255,255,${Math.min(1, alpha)})`;
@@ -864,20 +900,23 @@
           html: `
             <h3>Languages</h3>
             <div class="stack-grid">
+              <div class="stack-item"><span class="label">C/C++</span><span class="meta">systems</span></div>
               <div class="stack-item"><span class="label">Python</span><span class="meta">core</span></div>
-              <div class="stack-item"><span class="label">C++</span><span class="meta">core</span></div>
-              <div class="stack-item"><span class="label">JavaScript</span><span class="meta">scripting</span></div>
               <div class="stack-item"><span class="label">TypeScript</span><span class="meta">typed development</span></div>
+              <div class="stack-item"><span class="label">JavaScript</span><span class="meta">scripting</span></div>
+              <div class="stack-item"><span class="label">SQL</span><span class="meta">databases</span></div>
             </div>
-            <h3 style="margin-top:18px;">Web</h3>
+            <h3 style="margin-top:18px;">Frameworks & Technologies</h3>
             <div class="stack-grid">
               <div class="stack-item"><span class="label">React</span><span class="meta">UI development</span></div>
-              <div class="stack-item"><span class="label">HTML</span><span class="meta">markup</span></div>
-              <div class="stack-item"><span class="label">CSS</span><span class="meta">styling</span></div>
+              <div class="stack-item"><span class="label">Next.js</span><span class="meta">full-stack</span></div>
+              <div class="stack-item"><span class="label">Supabase</span><span class="meta">backend</span></div>
+              <div class="stack-item"><span class="label">REST APIs</span><span class="meta">integration</span></div>
             </div>
-            <h3 style="margin-top:18px;">Tools</h3>
+            <h3 style="margin-top:18px;">Developer Tools</h3>
             <div class="stack-grid">
               <div class="stack-item"><span class="label">Git</span><span class="meta">version control</span></div>
+              <div class="stack-item"><span class="label">Github</span><span class="meta">repositories</span></div>
             </div>
           `
         },
