@@ -149,8 +149,16 @@
     }
 
     @keyframes blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0; }
+
+      0%,
+      49% {
+        opacity: 1;
+      }
+
+      50%,
+      100% {
+        opacity: 0;
+      }
     }
 
     .status {
@@ -183,14 +191,59 @@
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-2px); }
-      75% { transform: translateX(2px); }
+
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+
+      10% {
+        transform: translate(-2px, 1px);
+      }
+
+      20% {
+        transform: translate(1px, -2px);
+      }
+
+      30% {
+        transform: translate(2px, 2px);
+      }
+
+      40% {
+        transform: translate(-1px, -1px);
+      }
+
+      50% {
+        transform: translate(2px, -2px);
+      }
+
+      60% {
+        transform: translate(-2px, 2px);
+      }
+
+      70% {
+        transform: translate(1px, 1px);
+      }
+
+      80% {
+        transform: translate(-2px, -1px);
+      }
+
+      90% {
+        transform: translate(1px, 2px);
+      }
     }
 
     #status-text.active {
@@ -379,9 +432,18 @@
       padding: 0;
     }
 
-    .panel-body::-webkit-scrollbar { width: 8px; }
-    .panel-body::-webkit-scrollbar-track { background: transparent; }
-    .panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .panel-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .panel-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .panel-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
 
     .panel-body h3 {
       color: var(--fg-bright);
@@ -392,8 +454,13 @@
       margin: 0 0 10px;
     }
 
-    .panel-body p { margin: 0 0 14px; }
-    .panel-body .muted { color: var(--fg-dim); }
+    .panel-body p {
+      margin: 0 0 14px;
+    }
+
+    .panel-body .muted {
+      color: var(--fg-dim);
+    }
 
     .stack-grid {
       display: grid;
@@ -430,7 +497,9 @@
       background: rgba(255, 255, 255, 0.02);
     }
 
-    .proj:last-child { margin-bottom: 0; }
+    .proj:last-child {
+      margin-bottom: 0;
+    }
 
     .proj .proj-head {
       display: flex;
@@ -440,9 +509,23 @@
       flex-wrap: wrap;
     }
 
-    .proj .proj-name { color: var(--fg-bright); font-size: 14px; font-weight: 700; }
-    .proj .proj-tags { color: var(--accent); font-size: 11px; letter-spacing: 0.04em; }
-    .proj .proj-desc { margin-top: 6px; color: var(--fg-mid); font-size: 13px; }
+    .proj .proj-name {
+      color: var(--fg-bright);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .proj .proj-tags {
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+
+    .proj .proj-desc {
+      margin-top: 6px;
+      color: var(--fg-mid);
+      font-size: 13px;
+    }
 
     .proj a.proj-link {
       color: var(--fg-mid);
@@ -461,8 +544,8 @@
       transition: opacity 0.2s ease;
     }
 
-    .proj a.proj-link:hover { 
-      color: var(--accent); 
+    .proj a.proj-link:hover {
+      color: var(--accent);
       border-color: var(--accent);
       text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
     }
@@ -500,18 +583,39 @@
       transform: translateY(-2px);
     }
 
-    .social-icon:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .social-icon:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     @keyframes termOpen {
-      from { transform: scale(0.96); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      from {
+        transform: scale(0.96);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     /* Enhanced panel animations */
     @keyframes panelOpenSpring {
-      0% { transform: translateX(-50%) scale(0.88); opacity: 0; }
-      60% { transform: translateX(-50%) scale(1.02); opacity: 1; }
-      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      0% {
+        transform: translateX(-50%) scale(0.88);
+        opacity: 0;
+      }
+
+      60% {
+        transform: translateX(-50%) scale(1.02);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+      }
     }
 
     #overlay.open .panel {
@@ -520,8 +624,15 @@
 
     /* Staggered load animations */
     @keyframes slideInFromLeft {
-      from { opacity: 0; transform: translateX(-8px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .brand {
@@ -532,9 +643,17 @@
       animation: slideInFromLeft 0.6s ease-out forwards;
     }
 
-    nav.dock .dock-btn:nth-child(1) { animation: slideInFromLeft 0.7s ease-out forwards; }
-    nav.dock .dock-btn:nth-child(2) { animation: slideInFromLeft 0.8s ease-out forwards; }
-    nav.dock .dock-btn:nth-child(3) { animation: slideInFromLeft 0.9s ease-out forwards; }
+    nav.dock .dock-btn:nth-child(1) {
+      animation: slideInFromLeft 0.7s ease-out forwards;
+    }
+
+    nav.dock .dock-btn:nth-child(2) {
+      animation: slideInFromLeft 0.8s ease-out forwards;
+    }
+
+    nav.dock .dock-btn:nth-child(3) {
+      animation: slideInFromLeft 0.9s ease-out forwards;
+    }
 
     .status {
       animation: slideInFromLeft 0.7s ease-out forwards;
@@ -591,18 +710,62 @@
     }
 
     @media (max-width: 640px) {
-      .app { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; padding: 16px clamp(16px, 4vw, 28px) 14px; }
-      .dock { position: relative; top: auto; left: auto; transform: none; margin-top: 18px; flex-direction: row; flex-wrap: wrap; gap: 8px; width: 100%; }
-      .dock-btn { width: auto; padding: 10px 14px; font-size: 13px; }
-      .social-row { position: relative; left: auto; bottom: auto; margin-top: 18px; }
-      #cursor-glow { display: none; }
-      .panel { width: calc(100% - 20px); margin-left: 0; left: 10px; transform: none !important; }
+      .app {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 16px clamp(16px, 4vw, 28px) 14px;
+      }
+
+      .dock {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin-top: 18px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .dock-btn {
+        width: auto;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+
+      .social-row {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        margin-top: 18px;
+      }
+
+      #cursor-glow {
+        display: none;
+      }
+
+      .panel {
+        width: calc(100% - 20px);
+        margin-left: 0;
+        left: 10px;
+        transform: none !important;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .brand .mark .blink { animation: none; opacity: 1; }
-      .status .dot { animation: none; }
+      .brand .mark .blink {
+        animation: none;
+        opacity: 1;
+      }
+
+      .status .dot {
+        animation: none;
+      }
     }
 
     #bracket-cursor.hover {
@@ -645,7 +808,8 @@
   <div id="bracket-cursor">
     <span class="left">[</span>
     <span class="right">]</span>
-    <svg class="move-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg class="move-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="rgba(255,255,255,0.85)"
+      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="5 9 2 12 5 15"></polyline>
       <polyline points="9 5 12 2 15 5"></polyline>
       <polyline points="15 19 12 22 9 19"></polyline>
@@ -669,20 +833,25 @@
       </nav>
 
       <div class="social-row" aria-label="Social links">
-        <a class="social-icon" href="https://github.com/bleeyy" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <a class="social-icon" href="https://github.com/bleeyy" target="_blank" rel="noopener noreferrer"
+          aria-label="GitHub">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-            <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.13-.02-2.04-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.72-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.41-5.27 5.7.42.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .3.2.66.79.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/>
+            <path
+              d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.13-.02-2.04-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.72-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.41-5.27 5.7.42.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .3.2.66.79.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z" />
           </svg>
         </a>
         <a class="social-icon" href="mailto:benjaminle17@outlook.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <rect x="2.5" y="4.5" width="19" height="15" rx="1.6"/>
-            <path d="M3.5 6 12 13l8.5-7" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"
+            aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="1.6" />
+            <path d="M3.5 6 12 13l8.5-7" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
-        <a class="social-icon" href="https://www.linkedin.com/in/benjamin-le-/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <a class="social-icon" href="https://www.linkedin.com/in/benjamin-le-/" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-            <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5ZM2.98 9.99h4v12.51h-4V9.99Zm6.74 0h3.83v1.71h.05c.53-1 1.84-2.06 3.79-2.06 4.06 0 4.81 2.67 4.81 6.14v6.72h-4v-5.96c0-1.42-.03-3.25-1.98-3.25-1.98 0-2.29 1.55-2.29 3.15v6.06h-4V9.99Z"/>
+            <path
+              d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5ZM2.98 9.99h4v12.51h-4V9.99Zm6.74 0h3.83v1.71h.05c.53-1 1.84-2.06 3.79-2.06 4.06 0 4.81 2.67 4.81 6.14v6.72h-4v-5.96c0-1.42-.03-3.25-1.98-3.25-1.98 0-2.29 1.55-2.29 3.15v6.06h-4V9.99Z" />
           </svg>
         </a>
       </div>
@@ -768,7 +937,7 @@
 
       let frame = 0;
       let overlayElement = null;
-      
+
       function tick() {
         frame++;
         ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -776,13 +945,13 @@
         ctx.textBaseline = 'top';
         const mx = mouse.x, my = mouse.y;
         const MAX_RIPPLE_RADIUS = 180;
-        
+
         if (!overlayElement) overlayElement = document.getElementById('overlay');
         const isPanelOpen = overlayElement ? overlayElement.classList.contains('open') : false;
-        
+
         for (const rp of ripples) { rp.r += 1.5; rp.life *= 0.96; }
         ripples = ripples.filter(rp => rp.life > 0.02);
-        
+
         // Update status based on ripple activity
         const statusText = document.getElementById('status-text');
         if (statusText) {
@@ -794,7 +963,7 @@
             statusText.classList.remove('active');
           }
         }
-        
+
         const speed = Math.min(Math.hypot(mouse.vx, mouse.vy), 40);
         mouse.vx *= 0.9; mouse.vy *= 0.9;
         for (let r = 0; r < rows; r++) {
@@ -853,7 +1022,7 @@
       }
 
       // Expose ripple trigger for panel interactions
-      window.triggerAsciiRipple = function(x, y, radius = 0, life = 0.9) {
+      window.triggerAsciiRipple = function (x, y, radius = 0, life = 0.9) {
         if (ripples.length > 5) ripples = ripples.slice(-5);
         ripples.push({ x, y, r: radius, life });
       };
@@ -955,14 +1124,14 @@
         }
       };
 
-      const overlay   = document.getElementById('overlay');
-      const bracket   = document.getElementById('bracket-cursor');
-      const panelEl   = document.querySelector('.panel');
+      const overlay = document.getElementById('overlay');
+      const bracket = document.getElementById('bracket-cursor');
+      const panelEl = document.querySelector('.panel');
       const panelBody = document.getElementById('panel-body');
       const panelHead = document.getElementById('panel-head');
-      const panelTitle= document.getElementById('panel-title-text');
-      const closeBtn  = document.getElementById('panel-close');
-      const buttons   = document.querySelectorAll('.dock-btn');
+      const panelTitle = document.getElementById('panel-title-text');
+      const closeBtn = document.getElementById('panel-close');
+      const buttons = document.querySelectorAll('.dock-btn');
 
       /* ---- DRAG ---- */
       let dragState = null;
@@ -970,20 +1139,37 @@
       const savedPositions = {}; // { about: {left, top}, stack: {...}, projects: {...} }
 
       function startDrag(e) {
-        if (e.target.closest('.panel-close, #at-close')) return;
+        // Don't drag when interacting with buttons, links, inputs, textareas, etc.
+        if (
+          e.target.closest(
+            'button, a, input, textarea, select, .proj-link, .panel-close, #at-close'
+          )
+        ) {
+          return;
+        }
+
         bracket.classList.add('drag-mode');
+
         const point = e.touches ? e.touches[0] : e;
         const rect = panelEl.getBoundingClientRect();
-        // Switch to absolute pixel positioning, dropping the CSS centering transform
-        panelEl.style.left   = rect.left + 'px';
-        panelEl.style.top    = rect.top  + 'px';
+
+        // Switch to absolute pixel positioning
+        panelEl.style.left = rect.left + 'px';
+        panelEl.style.top = rect.top + 'px';
         panelEl.style.marginLeft = '0';
+
         panelEl.classList.add('is-dragging');
-        dragState = { startX: point.clientX - rect.left, startY: point.clientY - rect.top };
+
+        dragState = {
+          startX: point.clientX - rect.left,
+          startY: point.clientY - rect.top
+        };
+
         document.addEventListener('mousemove', onDrag);
-        document.addEventListener('mouseup',   stopDrag);
-        document.addEventListener('touchmove', onDrag,   { passive: false });
-        document.addEventListener('touchend',  stopDrag);
+        document.addEventListener('mouseup', stopDrag);
+
+        document.addEventListener('touchmove', onDrag, { passive: false });
+        document.addEventListener('touchend', stopDrag);
       }
 
       function onDrag(e) {
@@ -991,12 +1177,12 @@
         e.preventDefault();
         const point = e.touches ? e.touches[0] : e;
         let newLeft = point.clientX - dragState.startX;
-        let newTop  = point.clientY - dragState.startY;
+        let newTop = point.clientY - dragState.startY;
         // clamp so panel can't be dragged fully off screen
-        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth  - panelEl.offsetWidth));
-        newTop  = Math.max(0, Math.min(newTop,  window.innerHeight - panelEl.offsetHeight));
+        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - panelEl.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, window.innerHeight - panelEl.offsetHeight));
         panelEl.style.left = newLeft + 'px';
-        panelEl.style.top  = newTop  + 'px';
+        panelEl.style.top = newTop + 'px';
       }
 
       function stopDrag() {
@@ -1009,54 +1195,54 @@
         dragState = null;
         bracket.classList.remove('drag-mode');
         document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('mouseup',   stopDrag);
+        document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('touchend',  stopDrag);
+        document.removeEventListener('touchend', stopDrag);
       }
 
       function resetPanelPosition() {
         panelEl.classList.remove('is-dragging');
-        panelEl.style.left       = '';
-        panelEl.style.top        = '';
+        panelEl.style.left = '';
+        panelEl.style.top = '';
         panelEl.style.marginLeft = '';
       }
 
-      // stack/projects drag handle = panel-head
-      panelHead.addEventListener('mousedown', startDrag);
-      panelHead.addEventListener('touchstart', startDrag, { passive: false });
-      panelHead.addEventListener('mousemove', (e) => {
-        const overClose = e.target.closest('.panel-close');
-        bracket.classList.toggle('drag-mode', !overClose);
+      // Entire panel is draggable
+      panelEl.addEventListener('mousedown', startDrag);
+      panelEl.addEventListener('touchstart', startDrag, { passive: false });
+
+      panelEl.addEventListener('mousemove', (e) => {
+        const overInteractive = e.target.closest(
+          'button, a, input, textarea, select'
+        );
+
+        bracket.classList.toggle('drag-mode', !overInteractive);
       });
-      panelHead.addEventListener('mouseleave', () => bracket.classList.remove('drag-mode'));
+
+      panelEl.addEventListener('mouseleave', () => {
+        if (!dragState) {
+          bracket.classList.remove('drag-mode');
+        }
+      });
 
       /* ---- TERMINAL ---- */
       function initTerminal() {
-        const tb      = document.getElementById('at-body');
-        const ti      = document.getElementById('at-input');
+        const tb = document.getElementById('at-body');
+        const ti = document.getElementById('at-input');
         const atClose = document.getElementById('at-close');
-        const atBar   = document.getElementById('at-titlebar');
+        const atBar = document.getElementById('at-titlebar');
         if (!tb || !ti || !atClose || !atBar) return;
 
-        // about drag handle = terminal title bar
-        atBar.addEventListener('mousedown', startDrag);
-        atBar.addEventListener('touchstart', startDrag, { passive: false });
-        atBar.addEventListener('mousemove', (e) => {
-          const overClose = e.target.closest('#at-close');
-          bracket.classList.toggle('drag-mode', !overClose);
-        });
-        atBar.addEventListener('mouseleave', () => bracket.classList.remove('drag-mode'));
-
-        atClose.addEventListener('mouseenter', () => { atClose.style.background='#333'; atClose.style.color='#fff'; });
-        atClose.addEventListener('mouseleave', () => { atClose.style.background='none'; atClose.style.color='#666'; });
+        atClose.addEventListener('mouseenter', () => { atClose.style.background = '#333'; atClose.style.color = '#fff'; });
+        atClose.addEventListener('mouseleave', () => { atClose.style.background = 'none'; atClose.style.color = '#666'; });
         atClose.addEventListener('click', closePanel);
 
         const COMMANDS = {
           help: () => [
             ['bright', 'available commands:'],
-            ['line',   '  whoami      — who is benjamin'],
-            ['line',   '  edu         — education'],
-            ['line',   '  clear       — clear terminal'],
+            ['line', '  whoami      — who is benjamin'],
+            ['line', '  edu         — education'],
+            ['line', '  clear       — clear terminal'],
           ],
           whoami: () => [
             ['bright', 'benjamin le'],
@@ -1071,13 +1257,13 @@
           ],
           edu: () => [
             ['bright', 'texas a&m university'],
-            ['line',   'b.s. computer engineering'],
-            ['line',   'college station, tx'],
+            ['line', 'b.s. computer engineering'],
+            ['line', 'college station, tx'],
           ],
           clear: () => '__CLEAR__',
         };
 
-        const styles = { bright:'color:#f2f2f2', accent:'color:#bbb', err:'color:#aaa;font-style:italic', ok:'color:#ccc', dim:'color:#333', line:'color:#888' };
+        const styles = { bright: 'color:#f2f2f2', accent: 'color:#bbb', err: 'color:#aaa;font-style:italic', ok: 'color:#ccc', dim: 'color:#333', line: 'color:#888' };
 
         function addLine(cls, text) {
           const d = document.createElement('div');
@@ -1141,8 +1327,8 @@
         const saved = savedPositions[key];
         if (saved) {
           panelEl.classList.add('is-dragging'); // disable centering transform
-          panelEl.style.left       = saved.left;
-          panelEl.style.top        = saved.top;
+          panelEl.style.left = saved.left;
+          panelEl.style.top = saved.top;
           panelEl.style.marginLeft = '0';
         } else {
           resetPanelPosition();
@@ -1211,7 +1397,7 @@
       /* ---- KONAMI CODE EASTER EGG ---- */
       const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
       let konamiIndex = 0;
-      
+
       document.addEventListener('keydown', (e) => {
         if (e.key === konamiCode[konamiIndex] || e.code === konamiCode[konamiIndex]) {
           konamiIndex++;
@@ -1236,7 +1422,7 @@
             }, i * 80);
           }
         }
-        
+
         // Show hidden message
         const msg = document.createElement('div');
         msg.style.cssText = `
@@ -1260,7 +1446,7 @@
         `;
         msg.innerHTML = '[ you found the secret ✓ ]<br><span style="font-size: 12px; color: #888;">nice moves, player one</span>';
         document.body.appendChild(msg);
-        
+
         setTimeout(() => {
           msg.style.animation = 'slideInFromLeft 0.4s ease-out reverse';
           setTimeout(() => msg.remove(), 400);
@@ -1270,4 +1456,5 @@
     })();
   </script>
 </body>
+
 </html>
